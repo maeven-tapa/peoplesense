@@ -1,0 +1,13 @@
+[Unit]
+Description=PeopleSense local-only Raspberry Pi PWM daemon
+After=network.target
+
+[Service]
+Type=simple
+StandardOutput=append:/opt/peoplesense/logs/pigpio.log
+StandardError=inherit
+ExecStart=/usr/local/bin/pigpiod -g -l
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

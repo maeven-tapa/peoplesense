@@ -1,0 +1,4 @@
+# Install root:root 0440 at /etc/sudoers.d/peoplesense-hotspot; validate with visudo.
+# Empty argument string forbids arbitrary command-line options. The helper's
+# only stdin operation changes its fixed wlan0 AP at 10.0.0.1.
+peoplesense ALL=(root) NOPASSWD: /usr/local/libexec/peoplesense-hotspot ""

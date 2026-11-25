@@ -1,0 +1,9 @@
+<section class="card form-card camera-selection-card" id="camera-selection-card">
+  <div class="card-heading"><div><h2>Select camera</h2><p>Choose a USB webcam connected to this device.</p></div>{% include 'portal/icon.html' with name='camera' %}</div>
+  <form method="post" action="{% url 'camera-select' device.pk %}" class="portal-form" id="camera-selection-form">
+    {% csrf_token %}
+    {% include 'portal/form_fields.html' with form=selection_form %}
+    <p class="field-help">Changing cameras stops the current feed. Start the new preview afterward.{% if device.camera_mode == 'tripwire' %} Reposition and save the counting line before counting resumes.{% endif %}</p>
+    <div class="form-actions"><button type="submit" class="button primary">Use this camera</button></div>
+  </form>
+</section>

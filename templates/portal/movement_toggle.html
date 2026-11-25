@@ -1,0 +1,4 @@
+<div class="movement-debug" data-movement-debug {% if device.camera_mode != 'tripwire' %}hidden{% endif %}>
+  <div class="movement-debug-controls"><span class="debug-label">DEBUG</span><button type="button" class="button movement-toggle" aria-pressed="false" data-movement-url="{% url 'camera-movement' device.pk %}" data-movement-target="{{ movement_target }}"><span class="movement-switch" aria-hidden="true"></span>Draw movement line</button></div>
+  <p class="movement-hint" aria-live="polite">Show each person’s recent path in yellow.</p>
+</div>

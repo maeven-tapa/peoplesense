@@ -1,0 +1,19 @@
+<section class="card pan-tilt-card" id="pan-tilt-control" data-status-url="{% url 'camera-hardware-status' device.pk %}">
+  <div class="card-heading"><div><span class="eyebrow">PAN & TILT</span><h2>Camera rotation</h2></div><span class="status-pill {% if hardware_state.ready %}online{% else %}offline{% endif %}" id="hardware-status">{% if hardware_state.ready %}Connected{% else %}Pi required{% endif %}</span></div>
+  <div class="pan-tilt-body">
+    <form action="{% url 'camera-rotate' device.pk %}" method="post" class="dpad" aria-label="Camera rotation controller">
+      {% csrf_token %}
+      <button type="submit" name="direction" value="up" class="dpad-up" aria-label="Tilt camera up" disabled>↑</button>
+      <button type="submit" name="direction" value="left" class="dpad-left" aria-label="Pan camera left" disabled>←</button>
+      <button type="submit" name="direction" value="home" class="dpad-center" aria-label="Center camera" disabled>{% include 'portal/icon.html' with name='camera' %}</button>
+      <button type="submit" name="direction" value="right" class="dpad-right" aria-label="Pan camera right" disabled>→</button>
+      <button type="submit" name="direction" value="down" class="dpad-down" aria-label="Tilt camera down" disabled>↓</button>
+    </form>
+    <div class="pan-tilt-readouts"><span>Horizontal <strong id="pan-angle">{{ hardware_state.pan|default_if_none:'—' }}{% if hardware_state.pan != None %}°{% endif %}</strong></span><span>Vertical <strong id="tilt-angle">{{ hardware_state.tilt|default_if_none:'—' }}{% if hardware_state.tilt != None %}°{% endif %}</strong></span><p>5° per press<br>Center returns to 90°</p></div>
+  </div>
+  <p class="hardware-message" id="hardware-message" role="status">{{ hardware_state.message }}</p>
+  <div class="ambient-readouts"><div><span>Ambient temperature</span><strong id="ambient-temperature">{{ hardware_state.temperature|default_if_none:'—' }}{% if hardware_state.temperature != None %} °C{% endif %}</strong></div><div><span>Humidity</span><strong id="ambient-humidity">{{ hardware_state.humidity|default_if_none:'—' }}{% if hardware_state.humidity != None %}%{% endif %}</strong></div></div>
+  <p class="sensor-message" id="sensor-message">DHT11 · ambient air readings</p>
+  <div class="gpio-pin-summary"><span>Pan <b>GPIO18 · Pin 12</b></span><span>Tilt <b>GPIO13 · Pin 33</b></span><span>DHT11 <b>GPIO4 · Pin 7</b></span></div>
+  <p class="rotation-note">Tripwire counting pauses during rotation. With a fixed line, reposition and save the line afterward.</p>
+</section>

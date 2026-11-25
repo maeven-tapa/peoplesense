@@ -1,0 +1,23 @@
+[Unit]
+Description=PeopleSense Django appliance portal
+After=network.target
+
+[Service]
+Type=simple
+User=peoplesense
+Group=peoplesense
+SupplementaryGroups=video
+WorkingDirectory=/opt/peoplesense
+EnvironmentFile=/opt/peoplesense/.env.rpi
+Environment=PYTHONUNBUFFERED=1
+StandardOutput=append:/opt/peoplesense/logs/web.log
+StandardError=inherit
+# One request process minimizes Pi RAM; threads let MJPEG and controls coexist.
+ExecStart=/opt/peoplesense/.venv/bin/gunicorn peoplesense.wsgi:application --bind 127.0.0.1:8000 --workers 1 --worker-class gthread --threads 8 --timeout 120 --access-logfile - --error-logfile - --capture-output
+Restart=on-failure
+RestartSec=5
+KillMode=control-group
+TimeoutStopSec=15
+
+[Install]
+WantedBy=multi-user.target

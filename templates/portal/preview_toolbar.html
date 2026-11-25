@@ -1,0 +1,7 @@
+<div class="preview-toolbar">
+  {% include 'portal/movement_toggle.html' %}
+  <form class="preview-capture-form" method="post" action="{% url 'camera-capture' device.pk %}" data-preview-capture>
+    {% csrf_token %}<button type="submit" class="button capture-button" disabled>{% include 'portal/icon.html' with name='camera' %}Capture</button>
+  </form>
+  <p class="capture-feedback" role="status" aria-live="polite" hidden></p>
+</div>

@@ -1,0 +1,21 @@
+# One dependency list for the Pi/Linux appliance and Windows development.
+# On a Pi, use python3 setup_peoplesense.py to install OS packages and services too.
+Django>=5.2.17,<5.3
+cryptography>=46,<49
+numpy>=2,<3
+scipy>=1.10,<2
+tzdata; platform_system == "Windows"
+
+# Install exactly one OpenCV distribution: all variants provide the cv2 module.
+opencv-python-headless>=4.10,<5; platform_system == "Linux"
+opencv-contrib-python>=4.10,<5; platform_system != "Linux"
+ai-edge-litert==2.2.0; platform_system == "Linux"
+flatbuffers>=25,<26; platform_system == "Linux"
+mediapipe==0.10.35; platform_system != "Linux"
+cv2-enumerate-cameras==1.4.0; platform_system != "Linux"
+
+# Pi GPIO only; RPi.GPIO itself comes from apt in a system-site-packages venv.
+gpiozero>=2,<3; platform_system == "Linux" and (platform_machine == "aarch64" or platform_machine == "arm64")
+pigpio==1.78; platform_system == "Linux" and (platform_machine == "aarch64" or platform_machine == "arm64")
+adafruit-circuitpython-dht==4.0.12; platform_system == "Linux" and (platform_machine == "aarch64" or platform_machine == "arm64")
+gunicorn>=23,<24; platform_system == "Linux"

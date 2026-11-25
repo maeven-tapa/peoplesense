@@ -1,0 +1,15 @@
+{% load humanize %}
+<section class="card device-information-card" id="device-information-card">
+  <div class="card-heading"><div><h2>Device information</h2><p>Your configured camera and current device status.</p></div>{% include 'portal/icon.html' with name='camera' %}</div>
+  {% if device %}
+  <dl class="detail-list">
+    <div><dt>Camera</dt><dd>{{ device.name }}</dd></div>
+    <div><dt>IP address</dt><dd>{{ device.ip_address }}</dd></div>
+    <div><dt>Location</dt><dd>{{ device.location }}</dd></div>
+    <div><dt>{% if device.source_type == 'external' %}Firmware{% else %}Processing{% endif %}</dt><dd>{% if device.source_type == 'external' %}{{ device.firmware }}{% else %}Local OpenCV{% endif %}</dd></div>
+    <div><dt>Thermal sensor</dt><dd>{% if device.temperature_enabled %}Enabled{% else %}Disabled{% endif %}</dd></div>
+    <div><dt>Total entries recorded</dt><dd>{{ entries|intcomma }}</dd></div>
+    <div><dt>Last event / heartbeat</dt><dd>{{ device.last_seen|date:'M j, Y · h:i A'|default:'Not connected yet' }}</dd></div>
+  </dl>
+  {% else %}<div class="empty-state compact"><p>Select a USB camera in Quick setup to view device information.</p></div>{% endif %}
+</section>

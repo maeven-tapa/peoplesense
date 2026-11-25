@@ -1,0 +1,22 @@
+[Unit]
+Description=PeopleSense Raspberry Pi servos and DHT11
+Requires=peoplesense-pigpio.service
+After=peoplesense-pigpio.service
+
+[Service]
+Type=simple
+User=peoplesense
+Group=peoplesense
+SupplementaryGroups=gpio
+WorkingDirectory=/opt/peoplesense
+EnvironmentFile=/opt/peoplesense/.env.rpi
+Environment=PYTHONUNBUFFERED=1
+StandardOutput=append:/opt/peoplesense/logs/hardware.log
+StandardError=inherit
+ExecStart=/opt/peoplesense/.venv/bin/python manage.py run_hardware
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target

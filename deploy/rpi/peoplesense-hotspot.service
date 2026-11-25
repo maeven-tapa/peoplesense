@@ -1,0 +1,23 @@
+[Unit]
+Description=PeopleSense Wi-Fi access point at 10.0.0.1
+Requires=NetworkManager.service
+After=NetworkManager.service
+
+[Service]
+Type=simple
+User=peoplesense
+Group=peoplesense
+WorkingDirectory=/opt/peoplesense
+EnvironmentFile=/opt/peoplesense/.env.rpi
+Environment=PYTHONUNBUFFERED=1
+StandardOutput=append:/opt/peoplesense/logs/hotspot.log
+StandardError=inherit
+ExecStart=/opt/peoplesense/.venv/bin/python manage.py run_hotspot
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=90
+KillMode=control-group
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

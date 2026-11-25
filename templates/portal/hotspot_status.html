@@ -1,0 +1,6 @@
+<div class="hotspot-status" data-hotspot-status-url="{% url 'hotspot-status' %}" aria-live="polite">
+  <div class="hotspot-status-heading"><strong>Wi-Fi hotspot</strong><span class="status-pill {% if hotspot_state.active %}online{% else %}offline{% endif %}" data-hotspot-label>{{ hotspot_state.label }}</span></div>
+  <div class="hotspot-address"><span>Portal address</span><a href="http://10.0.0.1/">http://10.0.0.1/</a></div>
+  <p class="field-help" data-hotspot-help>{% if hotspot_state.enabled %}Join this device’s Wi-Fi and open the address above. Saving changes reconnects the AP after 8 seconds; rejoin using the new name/password.{% else %}Available on Raspberry Pi after the hotspot service is installed. This Windows computer keeps the saved AP settings.{% endif %}</p>
+  <p class="field-error" data-hotspot-error {% if not hotspot_state.error %}hidden{% endif %}>{{ hotspot_state.error }}</p>
+</div>

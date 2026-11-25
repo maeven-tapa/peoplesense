@@ -1,0 +1,49 @@
+{% extends 'portal/base.html' %}{% load static %}{% block content %}
+<div class="page-heading"><div><span class="eyebrow">DEVICE SETTINGS</span><h1>Your device, your settings<span class="heading-dot">.</span></h1><p>Manage your Wi-Fi access point, sign-in password, and local time.</p></div></div>
+<div class="settings-grid device-settings-grid">
+  <section class="card form-card" id="wifi-settings-card">
+    <div class="card-heading"><div><h2>Device configuration</h2><p>Set the name and password for your Wi-Fi access point.</p></div>{% include 'portal/icon.html' with name='wifi' %}</div>
+    <form method="post" class="portal-form" id="wifi-settings-form">
+      {% csrf_token %}<input type="hidden" name="action" value="wifi">
+      {% include 'portal/form_fields.html' with form=wifi_form %}
+      {% include 'portal/hotspot_status.html' %}
+      <div class="form-actions"><button type="submit" class="button primary">{% include 'portal/icon.html' with name='check' %}Save Wi-Fi settings</button></div>
+    </form>
+    <div class="settings-camera-link"><span>Camera <strong>{{ appliance_camera.name|default:'Not configured' }}</strong></span><a class="text-link" href="{% url 'devices' %}">Camera controls {% include 'portal/icon.html' with name='arrow' %}</a></div>
+  </section>
+  <section class="card form-card" id="password-settings-card">
+    <div class="card-heading"><div><h2>Change administrator password</h2><p>Update the password for {{ request.user.username }}. You will stay signed in.</p></div>{% include 'portal/icon.html' with name='shield' %}</div>
+    <form method="post" class="portal-form" id="password-settings-form">
+      {% csrf_token %}<input type="hidden" name="action" value="password">
+      {% include 'portal/form_fields.html' with form=password_form %}
+      <div class="form-actions"><button type="submit" class="button primary">Change password</button></div>
+    </form>
+  </section>
+  <section class="card form-card timezone-settings-card" id="timezone-settings-card">
+    <div class="card-heading"><div><h2>Time & region</h2><p>Choose the time zone used throughout this portal.</p></div>{% include 'portal/icon.html' with name='clock' %}</div>
+    <form method="post" class="portal-form timezone-settings-form">
+      {% csrf_token %}<input type="hidden" name="action" value="timezone">
+      <div>{% include 'portal/form_fields.html' with form=timezone_form %}<p class="field-help">Applies to dashboard charts, event times, captures, and CSV exports.</p></div>
+      <div class="form-actions"><button type="submit" class="button primary">Save time zone</button></div>
+    </form>
+  </section>
+  {% include 'portal/device_information.html' with device=appliance_camera entries=device_entries %}
+  <section class="card form-card factory-reset-card" id="factory-reset-card">
+    <div class="card-heading"><div><h2>Factory reset</h2><p>Erase this device and start again.</p></div>{% include 'portal/icon.html' with name='shield' %}</div>
+    <div class="factory-reset-content">
+      <p>This permanently deletes <strong>all saved pictures</strong>, counting and surveillance history, alerts, camera settings, Wi-Fi settings, and portal accounts.</p>
+      <p class="field-help">Restores login <code>admin / 12345678</code>, Wi-Fi <code>PeopleSense-AP</code> without an AP password, and the portal at <code>http://10.0.0.1/</code>. The camera stops and first-time setup starts again.</p>
+      <details class="factory-reset-details" {% if reset_form.errors %}open{% endif %}>
+        <summary>Reset device…</summary>
+        <form method="post" action="{% url 'factory-reset' %}" class="portal-form" id="factory-reset-form">
+          {% csrf_token %}
+          {% include 'portal/form_fields.html' with form=reset_form %}
+          <p class="factory-reset-warning">This cannot be undone. Save any pictures or reports you want to keep before continuing.</p>
+          <div class="form-actions"><button type="submit" class="button factory-reset-button">Erase all data &amp; reset device</button></div>
+        </form>
+      </details>
+    </div>
+  </section>
+</div>
+<script src="{% static 'portal/settings.js' %}?v=20261007-hotspot" defer></script>
+{% endblock %}
